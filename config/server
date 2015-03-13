@@ -9,9 +9,16 @@ server {
     error_log /var/log/nginx/error.log;
 
     root /var/www/project/;
+
+    autoindex off; # we don’t want users to see files in directories
     location  /. { ## Disable .htaccess and other hidden files
         return 404;
     }
+
+    location ~ (^/(app/\|includes/\|lib/\|/pkginfo/\|var/\|report/config.
+    xml)\|/\.svn/\|/\.git/\|/.hta.+) {
+     deny all; #ensure sensitive files are not accessible
+     }
 
     location ~ ^/(status|ping)$ {
         access_log off;
@@ -24,8 +31,16 @@ server {
         autoindex  on;
         index index.html index.php; ## Allow a static html file to be shown first
         try_files $uri $uri/ @handler; ## If missing pass the URI to applicaiton front handler
-        expires 30d; ## Assume all files are cachable
+        access_log off; # do not log access to static files
+        expires max; # cache static files aggressively
     }
+
+    location \~\* \.(jpeg\|jpg\|gif\|png\|css\|js\|ico\|swf)$ {
+        try_files $uri $uri/ @proxy; # look for static files in root directory and
+        ask backend if not successful
+        expires max;
+        access_log off;
+     }
 
     location @handler { ## Common front handler
         rewrite / /index.php;
@@ -38,7 +53,7 @@ server {
     location ^~ /(media|skin|js)/ {
         fastcgi_hide_header Set-Cookie;
         access_log off;
-        expires 30d;
+        expires max;
     }
 
     location ~ \.php$ { ## Execute PHP scripts
