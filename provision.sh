@@ -32,15 +32,18 @@ sudo apt-get install --force-yes -y php5 php5-cli php5-curl php5-gd php5-mcrypt 
 echo -e "\n--- PHP config ---\n"
 sudo sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini > /dev/null 2>&1
 sudo sed -i "s/listen = 127.0.0.1:9000/listen = \/var\/run\/php5-fpm.sock/" /etc/php5/fpm/pool.d/www.conf > /dev/null 2>&1
+sudo sed -i "s/;listen.owner = www-data/listen.owner = www-data/" /etc/php5/fpm/pool.d/www.conf > /dev/null 2>&1
+sudo sed -i "s/listen.group = www-data/listen.group = www-data/" /etc/php5/fpm/pool.d/www.conf > /dev/null 2>&1
+sudo sed -i "s/listen.mode = 0660/listen.mode = 0660/" /etc/php5/fpm/pool.d/www.conf > /dev/null 2>&1
 sudo service php5-fpm restart  > /dev/null 2>&1
 sudo chown www-data:www-data /var/run/php5-fpm.sock > /dev/null 2>&1
 
 # nginx config
 echo -e "\n--- Nginx config ---\n"
 sudo rm -f /etc/nginx/sites-enabled/default > /dev/null 2>&1
-sudo ln -s /var/www/config/server /etc/nginx/sites-enabled/default > /dev/null 2>&1
+sudo cp /var/www/config/server /etc/nginx/sites-enabled/default > /dev/null 2>&1
 sudo rm -f /etc/nginx/nginx.conf > /dev/null 2>&1
-sudo ln -s /var/www/config/nginx.conf /etc/nginx/nginx.conf > /dev/null 2>&1
+sudo cp /var/www/config/nginx.conf /etc/nginx/nginx.conf > /dev/null 2>&1
 sudo service nginx restart > /dev/null 2>&1
 
 # redis

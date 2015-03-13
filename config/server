@@ -15,10 +15,9 @@ server {
         return 404;
     }
 
-    location ~ (^/(app/\|includes/\|lib/\|/pkginfo/\|var/\|report/config.
-    xml)\|/\.svn/\|/\.git/\|/.hta.+) {
-     deny all; #ensure sensitive files are not accessible
-     }
+    location ~ (^/(app/\|includes/\|lib/\|/pkginfo/\|var/\|report/config.xml)\|/\.svn/\|/\.git/\|/.hta.+) {
+        deny all; #ensure sensitive files are not accessible
+    }
 
     location ~ ^/(status|ping)$ {
         access_log off;
@@ -34,13 +33,6 @@ server {
         access_log off; # do not log access to static files
         expires max; # cache static files aggressively
     }
-
-    location \~\* \.(jpeg\|jpg\|gif\|png\|css\|js\|ico\|swf)$ {
-        try_files $uri $uri/ @proxy; # look for static files in root directory and
-        ask backend if not successful
-        expires max;
-        access_log off;
-     }
 
     location @handler { ## Common front handler
         rewrite / /index.php;
