@@ -41,9 +41,9 @@ sudo chown www-data:www-data /var/run/php5-fpm.sock > /dev/null 2>&1
 # nginx config
 echo -e "\n--- Nginx config ---\n"
 sudo rm -f /etc/nginx/sites-enabled/default > /dev/null 2>&1
-sudo cp /var/www/config/server /etc/nginx/sites-enabled/default > /dev/null 2>&1
+sudo cp /var/www/Vagrant-config/server /etc/nginx/sites-enabled/default > /dev/null 2>&1
 sudo rm -f /etc/nginx/nginx.conf > /dev/null 2>&1
-sudo cp /var/www/config/nginx.conf /etc/nginx/nginx.conf > /dev/null 2>&1
+sudo cp /var/www/Vagrant-config/nginx.conf /etc/nginx/nginx.conf > /dev/null 2>&1
 sudo service nginx restart > /dev/null 2>&1
 
 # redis
