@@ -11,8 +11,8 @@ locale-gen UTF-8
 # add repos for latest php, nginx & redis
 echo -e "\n--- Add repos for latest PHP, Nginx & Redis ---\n"
 sudo add-apt-repository -y ppa:nginx/stable > /dev/null 2>&1
-sudo add-apt-repository -y ppa:ondrej/php5 > /dev/null 2>&1
-sudo add-apt-repository -y ppa:rwky/redis > /dev/null 2>&1
+sudo add-apt-repository -y ppa:ondrej/php > /dev/null 2>&1
+sudo add-apt-repository ppa:chris-lea/redis-server > /dev/null 2>&1
 
 # base
 echo -e "\n--- Install essential packages ---\n"
